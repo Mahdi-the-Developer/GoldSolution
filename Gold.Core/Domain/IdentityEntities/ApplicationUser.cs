@@ -7,7 +7,7 @@ namespace Gold.Core.Domain.IdentityEntities
     {
         public string? FirstName { get; set; }
         public string? LastName { get; set; }
-        public DateTime? CreatDateTime { get; set; } = DateTime.Now;
+        public DateTime CreatDateTime { get; set; } = DateTime.Now;
 
         //nav props
         public virtual ICollection<ApplicationUserClaim>? Claims { get; set; }
@@ -15,9 +15,9 @@ namespace Gold.Core.Domain.IdentityEntities
         public virtual ICollection<ApplicationUserToken>? Tokens { get; set; }
         public virtual ICollection<ApplicationUserRole>? UserRoles { get; set; }
 
-        //public ApplicationUser()
-        //{
-        //    Id=Guid.NewGuid().ToString();
-        //}
+        public ApplicationUser()
+        {
+            Id=Guid.NewGuid().ToString();
+        }
     }
 }

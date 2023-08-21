@@ -2,4 +2,10 @@
 {
     width:8px;
 }
+.margin-10{
+    margin:10px !important;
+}
+.margin-5 {
+    margin: 5px,5px,5px,5px !important;
+}
 

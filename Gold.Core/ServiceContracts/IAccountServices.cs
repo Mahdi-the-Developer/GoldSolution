@@ -12,9 +12,9 @@ namespace Gold.Core.ServiceContracts
 {
     public interface IAccountServices
     {
-        public Task<ApplicationUser> GetUserByUserName(string userName);
-
+        public Task<ApplicationUser?> GetUserByUserName(string userName);
         public Task<ApplicationUser> GetUserByPhone(string userPhone);
+        public Task<string> GetUserIdByName(string? userName);
         public Task<ApplicationUser> GetUserById(string id);
         public Task<IdentityResult> AddUser(RegisterUserDTO regUserDto);
         public Task<bool> EditUser(EditUserDTO edtUserDto,List<string> selectedRoles);        

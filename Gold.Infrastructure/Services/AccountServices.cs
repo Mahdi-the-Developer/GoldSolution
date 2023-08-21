@@ -1,4 +1,5 @@
-﻿using Gold.Core.Domain.IdentityEntities;
+﻿using Gold.Core.Domain.Entities.Assets;
+using Gold.Core.Domain.IdentityEntities;
 using Gold.Core.DTO.AccountDTO;
 using Gold.Core.ServiceContracts;
 using Gold.Infrastructure.GoldDbContext;
@@ -56,7 +57,7 @@ namespace Gold.Infrastructure.Services
         {
             List<ShowUserDTO> showUsers = await _userManager.Users.Select(u => new ShowUserDTO
             {
-                UserName = u.UserName,
+                UserName = u.NormalizedUserName,
                 FirstName = u.FirstName,
                 LastName = u.LastName,
                 Phone = u.PhoneNumber,
@@ -65,7 +66,7 @@ namespace Gold.Infrastructure.Services
             }).OrderByDescending(u => u.CreateDateTime).ToListAsync();
             foreach (var showUser in showUsers)
             {
-                ApplicationUser user = await _userManager.Users.SingleOrDefaultAsync(u => u.UserName == showUser.UserName);
+                var user = await _userManager.Users.SingleOrDefaultAsync(u => u.NormalizedUserName == showUser.UserName);
                 if (user != null)
                 {
                     var userRoles = await _userManager.GetRolesAsync(user);
@@ -91,11 +92,24 @@ namespace Gold.Infrastructure.Services
                 PhoneNumber = regUserDto.Phone
             };
             IdentityResult result = await _userManager.CreateAsync(user, regUserDto.Password);
+            if (result.Succeeded)
+            {
+                UserAsset asset = new UserAsset()
+                {
+                    Cash = 0,
+                    Gold = 0,
+                    ToAppUser = user
+                };
+                await _Context.UserAssets.AddAsync(asset);
+                await _Context.SaveChangesAsync();
+            }
             return result;
         }
 
-        public async Task<ApplicationUser> GetUserByUserName(string userName)
+        public async Task<ApplicationUser?> GetUserByUserName(string? userName)
         {
+            if(userName == null)
+                return null;
             return await _userManager.FindByNameAsync(userName);
         }
 
@@ -133,6 +147,18 @@ namespace Gold.Infrastructure.Services
                 return result2;
 
             return IdentityResult.Success;
+        }
+
+        public async Task<string> GetUserIdByName(string? userName)
+        {
+            if (userName == null)
+                return string.Empty;
+            var user = await _userManager.FindByNameAsync(userName);
+            if (user == null)
+            {
+                return string.Empty;
+            }
+            return user.Id;
         }
     }
 }

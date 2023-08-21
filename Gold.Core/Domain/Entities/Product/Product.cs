@@ -10,6 +10,7 @@ namespace Gold.Core.Domain.Entities.Product
 {
     public class Product
     {
+        [Key]
         public string Id { get; set; } = Guid.NewGuid().ToString();
         public string Name { get; set; } = "طلا";
         public string UnitName { get; set; } = "گرم";

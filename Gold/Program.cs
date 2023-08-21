@@ -1,3 +1,4 @@
+using Gold.Core.Hubs;
 using Gold.Infrastructure.GoldDbContext;
 using Gold.UI;
 using Microsoft.EntityFrameworkCore;
@@ -18,8 +19,10 @@ app.Use(async (context, next) =>
     }
 });
 app.UseStaticFiles();
-app.UseAuthentication();
 app.UseRouting();
+app.UseAuthentication();
+app.UseAuthorization();
+app.MapHub<UserHub>("/hubs/user");
 app.MapControllers();
 
 

@@ -3,9 +3,11 @@ using Gold.Core.ServiceContracts;
 using Gold.Core.DTO.AccountDTO;
 using Gold.Core.Domain.IdentityEntities;
 using Microsoft.AspNetCore.Identity;
+using Microsoft.AspNetCore.Authorization;
 
 namespace Gold.UI.Controllers.AdminControllers
 {
+    [Authorize]
     public class ManageUsersController : Controller
     {
         private readonly IAccountServices _accountServices;

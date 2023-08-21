@@ -1,4 +1,4 @@
-﻿
+﻿@addTagHelper "*,Microsoft.AspNetCore.Mvc.TagHelpers"
 <!DOCTYPE html>
 <html dir="rtl" lang="fa">
 <head>
@@ -21,7 +21,7 @@
     <link href="/css/custom-style.css" rel="stylesheet" type="text/css" />
     <!-- Main Css -->
     <link href="/css/style.min.css" id="theme-opt" rel="stylesheet" type="text/css" />
-
+    <link href="/css/my-style.css" rel="stylesheet" />
     <!--===== Custom Font css =====-->
     <link href="/css/custom-fonts.css" rel="stylesheet" />
 
@@ -30,27 +30,26 @@
     <!-- Navbar STart -->
     <header class="defaultscroll sticky" id="topnav">
         <div class="container">
+            
             <!-- Logo container-->
-                <span class="logo-light-mode">
-                    @*
-                    <img alt="" class="l-dark" src="/images/logo-dark.png" />
-                    <img alt="" class="l-light" src="/images/logo-light.png" />*@
+            <div id="navigation">
+                <!-- Navigation Menu-->
+                <ul class="navigation-menu nav-right nav-light">
+                    @{
+                        if (User.Identity.IsAuthenticated)
+                        {
+                            <li class="parent-menu-item"><a asp-controller="Account" asp-action="LogoutView">LogOut</a></li>
+                            <li class="parent-menu-item"><a asp-controller="Account" asp-action="UserPanel">@User.Identity?.Name</a></li>
+                        }
+                        else
+                        {
+                            <li class="parent-menu-item"><a asp-controller="Account" asp-action="Register">Register</a></li>
+                            <li class="parent-menu-item"><a asp-controller="Account" asp-action="Login">LogIn</a></li>
+                        }
+                    }
+                </ul>
+            </div>
 
-                    @if (User.Identity.IsAuthenticated)
-                    {
-                        <a asp-controller="Account" asp-action="LogoutView">LogOut</a>
-                        <br>
-                        <a asp-controller="Account" asp-action="UserPanel">@User.Identity?.Name</a>
-                    }
-                    else
-                    {
-                        <a asp-controller="Account" asp-action="Register">Register</a>
-                        <br>
-                        <a asp-controller="Account" asp-action="Login">LogIn</a>
-                    }
-                </span>
-                
-                @*<img alt="" class="logo-dark-mode" src="/images/logo-light.png" />*@
             <!-- End Logo container-->
             <div class="menu-extras">
                 <div class="menu-item">
@@ -66,204 +65,58 @@
                 </div>
             </div>
 
-            <ul class="buy-button list-inline mb-0">
-                <li class="list-inline-item search-icon mb-0">
-                    <div class="dropdown">
-                        <button aria-expanded="false" aria-haspopup="true" class="btn btn-link text-decoration-none dropdown-toggle mb-0 p-0" data-bs-toggle="dropdown" type="button">
-                            <i class="uil uil-search h5 text-dark nav-light-icon-dark mb-0"></i>
-                            <i class="uil uil-search h5 text-white nav-light-icon-white mb-0"></i>
-                        </button>
-                        <div class="dropdown-menu dd-menu dropdown-menu-end bg-white shadow rounded border-0 mt-4 py-0" style="width: 300px;">
-                            <form class="p-4">
-                                <input class="form-control border bg-white" id="text" name="name" placeholder="جستجو کردن ..." type="text" />
-                            </form>
-                        </div>
-                    </div>
-                </li>
-            </ul>
 
             <div id="navigation">
                 <!-- Navigation Menu-->
                 <ul class="navigation-menu nav-left nav-light">
-                    <li class="has-submenu parent-parent-menu-item">
-                        <a href="javascript:void(0)">صفحه اصلی</a><span class="menu-arrow"></span>
-                        <ul class="submenu megamenu">
-                            <li>
-                                <ul>
-                                    <li>
-                                        <a class="sub-menu-item" href="index-startup.html">
-                                            <div class="text-lg-center">
-                                                <span class="d-none d-lg-block"><img alt="" class="img-fluid rounded shadow-md" src="/images/demos/startup.png" /></span>
-                                                <span class="mt-lg-2 d-block"><i class="uil uil-briefcase-alt menu-list-icon align-middle me-1"></i> استارتاپ</span>
-                                            </div>
-                                        </a>
-                                    </li>                                    
-                                </ul>
-                            </li>
+                    @if (User.IsInRole("Admin") || User.IsInRole("MainAdmin"))
+                    {
+                        <li class="has-submenu parent-parent-menu-item">
+                            <a href="javascript:void(0)">ادمین</a><span class="menu-arrow"></span>
+                            <ul class="submenu">
+                                <li class="has-submenu parent-menu-item">
+                                    <a href="javascript:void(0)">ماژول طلا</a><span class="submenu-arrow"></span>
+                                    <ul class="submenu">
+                                        <li><a class="sub-menu-item" asp-controller="ManageGold" asp-action="ListOfUsersGoldDemands">لیست خرید کاربران</a></li>
+                                        <li><a class="sub-menu-item" asp-controller="ManageGold" asp-action="ListOfUserGoldOffers">لیست فروش کاربران</a></li>
+                                        <li><a class="sub-menu-item" asp-controller="ManageGold" asp-action="SystemGoldBillsList">لیست فاکتورهای سیستم</a></li>
+                                        <li><a class="sub-menu-item" asp-controller="ManageGold" asp-action="SetSystemGoldToCash">فروش طلا</a></li>
+                                        <li><a class="sub-menu-item" asp-controller="ManageGold" asp-action="SetSystemCashToGold">خرید طلا</a></li>
+                                    </ul>
+                                </li>
 
-                            <li>
-                                <ul>
-                                    <li>
-                                        <a class="sub-menu-item" href="index-application.html">
-                                            <div class="text-lg-center">
-                                                <span class="d-none d-lg-block"><img alt="" class="img-fluid rounded shadow-md" src="/images/demos/application.png" /></span>
-                                                <span class="mt-lg-2 d-block"><i class="uil uil-mobile-android menu-list-icon align-middle me-1"></i> برنامه های کاربردی</span>
-                                            </div>
-                                        </a>
-                                    </li>
-                                </ul>
-                            </li>
+                                <li class="has-submenu parent-menu-item">
+                                    <a asp-controller="ManageUsers" asp-action="UsersList"> مدیریت کاربران </a>                                    
+                                </li>
+                                <li class="has-submenu parent-menu-item">
+                                    <a asp-controller="ManageRoles" asp-action="RolesList">مدیریت نقش ها</a>
+                                <li class="has-submenu parent-menu-item">
+                                    <a asp-controller="Statics" asp-action="Index">آمار</a>
+                                </li>
+                            </ul>
+                        </li>                           
+                    }
 
-                            <li>
-                                <ul>
-                                    <li>
-                                        <a class="sub-menu-item" href="index-event.html">
-                                            <div class="text-lg-center">
-                                                <span class="d-none d-lg-block"><img alt="" class="img-fluid rounded shadow-md" src="/images/demos/event.png" /></span>
-                                                <span class="mt-lg-2 d-block"><i class="uil uil-post-stamp menu-list-icon align-middle me-1"></i> رویداد</span>
-                                            </div>
-                                        </a>
-                                    </li>
-                                </ul>
-                            </li>
-
-                            <li>
-                                <ul>
-                                    <li>
-                                        <a class="sub-menu-item" href="index-personal.html">
-                                            <div class="text-lg-center">
-                                                <span class="d-none d-lg-block"><img alt="" class="img-fluid rounded shadow-md" src="/images/demos/personal.png" /></span>
-                                                <span class="mt-lg-2 d-block"><i class="uil uil-user menu-list-icon align-middle me-1"></i> شخصی</span>
-                                            </div>
-                                        </a>
-                                    </li>                                    
-                                </ul>
-                            </li>
-
-                            <li>
-                                <ul>
-                                    <li>
-                                        <a class="sub-menu-item" href="index-charity.html">
-                                            <div class="text-lg-center">
-                                                <span class="d-none d-lg-block"><img alt="" class="img-fluid rounded shadow-md" src="/images/demos/charity.png" /></span>
-                                                <span class="mt-lg-2 d-block"><i class="uil uil-thumbs-up menu-list-icon align-middle me-1"></i> خیریه</span>
-                                            </div>
-                                        </a>
-                                    </li>
-                                </ul>
-                            </li>
-                        </ul>
-                    </li>
 
                     <li class="has-submenu parent-parent-menu-item">
-                        <a href="javascript:void(0)">صفحات</a><span class="menu-arrow"></span>
-                        <ul class="submenu">
-                            <li><a class="sub-menu-item" href="page-aboutus.html"> درباره ما </a></li>
-                            <li class="has-submenu parent-menu-item">
-                                <a href="javascript:void(0)"> خدمات </a><span class="submenu-arrow"></span>
-                                <ul class="submenu">
-                                    <li><a class="sub-menu-item" href="page-services.html"> خدمات </a></li>
-                                    <li><a class="sub-menu-item" href="page-services-two.html">خدمات دو</a></li>
-                                    <li><a class="sub-menu-item" href="page-single-service.html">جزئیات خدمات </a></li>
-                                </ul>
-                            </li>
-                            <li><a class="sub-menu-item" href="page-faqs.html">پرسش و پاسخ</a></li>
-                            <li><a class="sub-menu-item" href="page-pricing.html"> قیمت گذاری </a></li>
-                            <li><a class="sub-menu-item" href="page-team.html"> تیم </a></li>
-                            <li class="has-submenu parent-menu-item">
-                                <a href="javascript:void(0)">فروشگاه</a><span class="submenu-arrow"></span>
-                                <ul class="submenu">
-                                    <li><a class="sub-menu-item" href="shop-grids.html">محصول شبکه ای</a></li>
-                                    <li><a class="sub-menu-item" href="shop-product-detail.html">جزئیات محصول</a></li>
-                                    <li><a class="sub-menu-item" href="shop-cart.html">سبد خرید</a></li>
-                                    <li><a class="sub-menu-item" href="shop-checkout.html">تسویه حساب</a></li>
-                                </ul>
-                            </li>
-                            <li class="has-submenu parent-menu-item">
-                                <a href="javascript:void(0)">ویژه</a><span class="submenu-arrow"></span>
-                                <ul class="submenu">
-                                    <li><a class="sub-menu-item" href="page-comingsoon.html">به زودی</a></li>
-                                    <li><a class="sub-menu-item" href="page-maintenance.html">نگهداری</a></li>
-                                    <li><a class="sub-menu-item" href="page-error.html">خطا</a></li>
-                                </ul>
-                            </li>
-                            <li><a class="sub-menu-item" href="page-elements.html"> کامپوننت </a></li>
-                        </ul>
-                    </li>
-
-                    <li class="has-submenu parent-parent-menu-item">
-                        <a href="javascript:void(0)"> نمونه کار</a><span class="menu-arrow"></span>
-                        <ul class="submenu megamenu">
-                            <li>
-                                <ul>
-                                    <li class="megamenu-head">نمونه کار کلاسیک</li>
-                                    <li><a class="sub-menu-item" href="portfolio-classic-two.html">2 ستونه</a></li>
-                                </ul>
-                            </li>
-
-                            <li>
-                                <ul>
-                                    <li class="megamenu-head">نمونه کار خلاقانه</li>
-                                    <li><a class="sub-menu-item" href="portfolio-creative-two.html">2 ستونه</a></li>
-                                </ul>
-                            </li>
-
-                            <li>
-                                <ul>
-                                    <li class="megamenu-head">نمونه کار مدرن</li>
-                                    <li><a class="sub-menu-item" href="portfolio-modern-two.html">2 ستونه</a></li>
-                                </ul>
-                            </li>
-
-                            <li>
-                                <ul>
-                                    <li class="megamenu-head">نمونه کار پازلی</li>
-                                    <li><a class="sub-menu-item" href="portfolio-masonry-two.html">2 ستونه</a></li>
-                                </ul>
-                            </li>
-                        </ul>
-                    </li>
-
-                    <li class="has-submenu parent-parent-menu-item">
-                        <a href="javascript:void(0)"> وبلاگ </a><span class="menu-arrow"></span>
+                        <a href="javascript:void(0)">طلا</a><span class="menu-arrow"></span>
                         <ul class="submenu">
                             <li class="has-submenu parent-menu-item">
-                                <a href="javascript:void(0)"> وبلاگ </a><span class="submenu-arrow"></span>
-                                <ul class="submenu">
-                                    <li><a class="sub-menu-item" href="blog-grid.html">وبلاگ شبکه ای </a></li>
-                                    <li><a class="sub-menu-item" href="blog-masonry.html">وبلاگ پازلی</a></li>
-                                    <li><a class="sub-menu-item" href="blog-list.html">وبلاگ لیستی </a></li>
-                                    <li><a class="sub-menu-item" href="blog-grid-sidebar.html">وبلاگ با سایدبار </a></li>
-                                    <li><a class="sub-menu-item" href="blog-masonry-sidebar.html">وبلاگ پازلی با سایدبار</a></li>
-                                    <li><a class="sub-menu-item" href="blog-list-sidebar.html">وبلاگ لیستی با سایدبار </a></li>
-                                </ul>
+                                <a asp-controller="Gold" asp-action="UserOrdersList"> لیست معاملات من </a>
                             </li>
                             <li class="has-submenu parent-menu-item">
-                                <a href="javascript:void(0)">وبلاگ تصویری</a><span class="submenu-arrow"></span>
-                                <ul class="submenu">
-                                    <li><a class="sub-menu-item" href="blog-image-grid.html">وبلاگ شبکه ای </a></li>
-                                    <li><a class="sub-menu-item" href="blog-image-masonry.html">وبلاگ پازلی</a></li>
-                                    <li><a class="sub-menu-item" href="blog-image-grid-sidebar.html">وبلاگ با سایدبار </a></li>
-                                    <li><a class="sub-menu-item" href="blog-image-masonry-sidebar.html">وبلاگ پازلی با سایدبار</a></li>
-                                </ul>
+                                <a asp-controller="Gold" asp-action="Buy"> خرید طلا </a>
                             </li>
                             <li class="has-submenu parent-menu-item">
-                                <a href="javascript:void(0)">جزئیات وبلاگ </a><span class="submenu-arrow"></span>
-                                <ul class="submenu">
-                                    <li><a class="sub-menu-item" href="blog-detail-one.html">جزئیات وبلاگ یک</a></li>
-                                    <li><a class="sub-menu-item" href="blog-detail-two.html">جزئیات وبلاگ دو</a></li>
-                                    <li><a class="sub-menu-item" href="blog-detail-three.html">جزئیات وبلاگ سه</a></li>
-                                    <li><a class="sub-menu-item" href="blog-detail-four.html">جزئیات وبلاگ چهار</a></li>
-                                    <li><a class="sub-menu-item" href="blog-detail-five.html">جزئیات وبلاگ پنج</a></li>
-                                </ul>
+                                <a asp-controller="Gold" asp-action="Sell"> فروش طلا </a>
                             </li>
-                            <li><a class="sub-menu-item" href="blog-author.html">نویسنده</a></li>
                         </ul>
                     </li>
 
-                    <li><a class="sub-menu-item" href="page-contact.html"> تماس با ما </a></li>
+
                 </ul><!--end navigation menu-->
             </div><!--end navigation-->
+            
         </div><!--end container-->
     </header><!--end header-->
     <!-- Navbar End -->
@@ -364,6 +217,10 @@
     <!-- Main Js -->
     <script src="/js/plugins.init.js"></script><!--Note: All init js like tiny slider, counter, countdown, maintenance, lightbox, gallery, swiper slider, aos animation etc.-->
     <script src="/js/app.js"></script><!--Note: All important javascript like page loader, menu, sticky menu, menu-toggler, one page menu etc. -->
+    <script src="/js/jquery.min.js"></script>
+    <script src="/lib/microsoft/signalr/dist/browser/signalr.js"></script>
+    <script src="/js/usersCount.js"></script>
+    @await RenderSectionAsync("Scripts",false);
 </body>
 
-</html>
+</html> 

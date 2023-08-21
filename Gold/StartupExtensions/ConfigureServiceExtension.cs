@@ -13,6 +13,7 @@ namespace Gold.UI
         public static IServiceCollection ConfigureServices(this IServiceCollection services,IConfiguration configuration)
         {
             services.AddControllersWithViews();
+            services.AddSignalR();
 
 
             //add services here
@@ -20,9 +21,11 @@ namespace Gold.UI
                 Options.UseSqlServer(configuration.GetConnectionString("LocalConnection"));
             });
 
-            //add repositories here
+            //add services here
             services.AddScoped<IAccountServices,AccountServices>();
             services.AddScoped<IRoleServices,RoleServices>();
+            services.AddScoped<IGoldServices, GoldServices>();
+            services.AddScoped<IPayServices, PayServices>();
 
             services.AddIdentity<ApplicationUser,ApplicationRole>(options=>
             {

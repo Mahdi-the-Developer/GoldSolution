@@ -9,6 +9,7 @@ namespace Gold.Core.Domain.Entities.Product
 {
     public class GoldPrice
     {
+        [Key]
         public string Id { get; set; } = Guid.NewGuid().ToString();
         public double Price { get; set; }
         public DateTime DateTime { get; set; } = DateTime.Now;

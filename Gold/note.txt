@@ -1,4 +1,23 @@
+//pages we have
+login register logout
+EditUser DeleteUser 
+userGoldDemand userGoldOffer userBillList
+sysGoldDemand sysGoldOffer allUsersBillsList
+
+
+
+//today
+
+
 //todo
 
 -add assets to user panel
--
+-goldcontroller:
+	payUGC
+	payUCG
+	SuspendUGC
+	SuspendUCG
+
+
+//done
+the logic of buying gold from users by system bill execution

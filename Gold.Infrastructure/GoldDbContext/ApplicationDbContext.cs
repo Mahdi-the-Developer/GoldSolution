@@ -19,13 +19,15 @@ namespace Gold.Infrastructure.GoldDbContext
         }
         public virtual DbSet<Product> Products { get; set; }
         public virtual DbSet<GoldPrice> GoldPrices { get; set; }
-        public virtual DbSet<UserGoldAsset> UserGoldAssets { get; set; }
+        public virtual DbSet<UserAsset> UserAssets { get; set; }
         public virtual DbSet<UserCashToGold> UserCashGolds { get; set; }
         public virtual DbSet<UserGoldToCash> UserGoldCashs { get; set; }
         public virtual DbSet<SystemCashToGold> SystemCashToGolds { get; set; }
         public virtual DbSet<SystemGoldToCash> SystemGoldToCashs { get; set; }
         public virtual DbSet<UserSystemGoldToCashBill> UserSystemGoldToCashBills { get; set; }
         public virtual DbSet<UserSystemCashToGoldBill> UserSystemCashToGoldBills { get; set; }
+        public virtual DbSet<Transaction> Transactions { get; set; }
+
 
 
 
@@ -41,7 +43,7 @@ namespace Gold.Infrastructure.GoldDbContext
 
             //modelBuilder.Entity<Price>().HasKey(t => new { t.priceId });
 
-
+            var hasher = new PasswordHasher<ApplicationUser>();
             ApplicationUser user = new()
             {
                 Id = "8c72dff883b3403e81dc7bf88ce26b8a",
@@ -49,6 +51,8 @@ namespace Gold.Infrastructure.GoldDbContext
                 FirstName = "Mahdi",
                 LastName = "Montazeri",
                 PhoneNumber = "09125850371",
+                PasswordHash = hasher.HashPassword(null, "56181Roya@"),
+                SecurityStamp = "1",
                 CreatDateTime = DateTime.Now,
             };
 
@@ -58,8 +62,8 @@ namespace Gold.Infrastructure.GoldDbContext
             //    );
 
             ///
-            PasswordHasher<ApplicationUser> passwordHasher = new();
-            passwordHasher.HashPassword(user, "56181Roya@");
+            //PasswordHasher<ApplicationUser> passwordHasher = new();
+            //passwordHasher.HashPassword(user, "56181Roya@");
             modelBuilder.Entity<ApplicationUser>(b =>
             {
                 b.HasData(user);

@@ -1,10 +1,13 @@
 ﻿using Gold.Core.Domain.Entities.Assets;
+using System.ComponentModel.DataAnnotations;
 using Gold.Core.Domain.IdentityEntities;
 using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using Microsoft.EntityFrameworkCore.Metadata.Internal;
+using System.Numerics;
 
 namespace Gold.Core.Domain.Entities.Finance
 {
@@ -13,40 +16,55 @@ namespace Gold.Core.Domain.Entities.Finance
     /// </summary>
 
     public class SystemGoldToCash
-    {       
+    {
+        [Key]
         public string Id { get; set; } = Guid.NewGuid().ToString();
         /// <summary>
         /// the total amount of gold in gerams to be sold by system to users
         /// </summary>
-        public double GoldWeight { get; set; }
+        [RegularExpression(@"^\d+(\.\d{1,4})?$",ErrorMessage ="حد اکثر 4 رقم اعشار قابل قبول است")]
+        public double TotalGold { get; set; }
         /// <summary>
         /// the total price that system payed to buy gold 
         /// </summary>
-        public uint TotalBoughtPrice { get; set; }
+        public decimal TotalCash { get; set; }
         /// <summary>
         /// the price that is determined to sell one geram of gold to users
         /// </summary>
-        public uint UnitSellPrice { get; set; }
+        public decimal UnitPrice { get; set; }
         /// <summary>
         /// the amount of gold that has been sold in one bill until now
         /// </summary>
-        public double SoldGoldWeight { get; set; }
+        [RegularExpression(@"^\d+(\.\d{1,4})?$",ErrorMessage ="حد اکثر 4 رقم اعشار قابل قبول است")]
+        public double SoldGold { get; set; }
+        [RegularExpression(@"^\d+(\.\d{1,4})?$", ErrorMessage = "حد اکثر 4 رقم اعشار قابل قبول است")]
+        public double LeftGold { get; set; }
         /// <summary>
         /// the total cash system earned in this bill from selling gold to users until now
         /// </summary>
-        public uint EarnedCash { get; set; }        
-        public DateTime DateTime { get; set; }
-        /// <summary>
-        /// is the whole bill sold?
-        /// </summary>
-        public bool IsOver { get; set; } = false;
+        public decimal EarnedCash { get; set; }  
+        public decimal LeftCash { get; set; }
+        public DateTime DateTime { get; set; }      
+        public DateTime ExecutionTime { get; set; }      
+        public long Delay { get; set; }
         /// <summary>
         /// is this bill deactivated by admin?
         /// </summary>
         public bool IsActive { get; set; } = false;
+        /// <summary>
+        /// is the whole bill sold?
+        /// </summary>
+        public bool IsDone { get; set; } = false;
+        public SystemGoldToCash()
+        {
+            LeftCash = (decimal)TotalGold * UnitPrice;
+            ToUserSystemCashToGoldBills = new HashSet<UserSystemCashToGoldBill>();
+        }
 
         //navigation properties
-        public ICollection<UserSystemGoldToCashBill>? ToUserSystemGoldToCashBills { get; set; }
+        public ApplicationUser ToAppUser { get; set; }
+
+        public ICollection<UserSystemCashToGoldBill>? ToUserSystemCashToGoldBills { get; set; }
 
     }
 }

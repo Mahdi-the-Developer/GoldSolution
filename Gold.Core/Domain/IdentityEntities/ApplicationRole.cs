@@ -17,9 +17,9 @@ namespace Gold.Core.Domain.IdentityEntities
         public virtual ICollection<ApplicationUserRole>? UserRoles { get; set; }
         public virtual ICollection<ApplicationRoleClaim>? RoleClaims { get; set; }
 
-        //public ApplicationRole()
-        //{
-        //    Id = Guid.NewGuid().ToString();
-        //}
+        public ApplicationRole()
+        {
+            Id = Guid.NewGuid().ToString();
+        }
     }
 }

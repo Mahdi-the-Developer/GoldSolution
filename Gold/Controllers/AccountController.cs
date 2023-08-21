@@ -105,9 +105,17 @@ namespace Gold.UI.Controllers
         #region User Panel
         [HttpGet]
         [Route("/userpanel")]
-        public IActionResult UserPanel()
+        public async Task<IActionResult> UserPanel()
         {
-            return View();
+            var user =await _accountServices.GetLogedinUser(HttpContext);
+            ShowUserDTO showUser = new()
+            {
+                UserName = user.UserName,
+                FirstName = user.FirstName,
+                LastName = user.LastName,
+                Phone = user.PhoneNumber,
+            };
+            return View(showUser);
         }
         #endregion
     }
