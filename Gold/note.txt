@@ -7,7 +7,7 @@ sysGoldDemand sysGoldOffer allUsersBillsList
 
 
 //today
-
+ step 1 on master
 
 //todo
 
