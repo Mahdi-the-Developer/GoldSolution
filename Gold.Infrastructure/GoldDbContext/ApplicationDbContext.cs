@@ -20,7 +20,7 @@ namespace Gold.Infrastructure.GoldDbContext
         }
         public virtual DbSet<Product> Products { get; set; }
         public virtual DbSet<GoldPrice> GoldPrices { get; set; }
-        public virtual DbSet<UserAsset> UserAssets { get; set; }
+        public virtual DbSet<UserGoldAsset> UserGoldAssets { get; set; }
         public virtual DbSet<UserCashToGold> UserCashGolds { get; set; }
         public virtual DbSet<UserGoldToCash> UserGoldCashs { get; set; }
         public virtual DbSet<SystemCashToGold> SystemCashToGolds { get; set; }
