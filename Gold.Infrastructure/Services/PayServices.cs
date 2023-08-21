@@ -9,17 +9,9 @@ using Microsoft.EntityFrameworkCore;
 using Gold.Infrastructure.ExtensionMethods;
 using System;
 using System.Collections.Generic;
-using System.Linq;
-using System.Net.Http;
-using System.Numerics;
-using System.Text;
-using System.Threading.Tasks;
-using Gold.Core.DTO.AccountDTO;
+
 using Gold.Core.Domain.Entities.Assets;
-using Microsoft.AspNetCore.Routing.Tree;
-using System.Diagnostics;
 using Gold.Core.DTO.PayDTO;
-using Gold.Infrastructure.Migrations;
 
 namespace Gold.Infrastructure.Services
 {
@@ -45,9 +37,9 @@ namespace Gold.Infrastructure.Services
             return await _context.Transactions.SingleOrDefaultAsync(t => t.Id == transactionId);
         }
 
-        public async Task<UserAsset> getUserAssetByUser(ApplicationUser user)
+        public async Task<UserGoldAsset> getUserAssetByUser(ApplicationUser user)
         {
-            return await _context.UserAssets.SingleOrDefaultAsync(ua => ua.ToAppUser == user);
+            return await _context.UserGoldAssets.SingleOrDefaultAsync(ua => ua.ToAppUser == user);
         }
 
         public async Task setTransaction(PayBillDTO payBillDto, string transId)
@@ -79,8 +71,8 @@ namespace Gold.Infrastructure.Services
 
         public async Task setUserAssetCashToZeroById(string assetId)
         {
-            UserAsset asset = await _context.UserAssets.SingleOrDefaultAsync(a => a.Id == assetId);
-            asset.Cash = 0;
+            UserGoldAsset asset = await _context.UserGoldAssets.SingleOrDefaultAsync(a => a.Id == assetId);
+            asset.TotalCashAsset = 0;
             await _context.SaveChangesAsync();
         }
 
@@ -93,8 +85,8 @@ namespace Gold.Infrastructure.Services
 
         public async Task withdrawFromAssetByIdandAmount(string assetId, decimal moneyAmount)
         {
-            UserAsset userAsset= await _context.UserAssets.SingleOrDefaultAsync(ua => ua.Id == assetId);
-            userAsset.Cash-= moneyAmount;
+            UserGoldAsset userAsset= await _context.UserGoldAssets.SingleOrDefaultAsync(ua => ua.Id == assetId);
+            userAsset.TotalCashAsset-= moneyAmount;
             await _context.SaveChangesAsync();
         }
     }

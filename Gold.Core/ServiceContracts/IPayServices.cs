@@ -24,6 +24,6 @@ namespace Gold.Core.ServiceContracts
         public Task setUserAssetCashToZeroById(string assetId);
         public Task withdrawFromAssetByIdandAmount(string assetId, decimal moneyAmount);
         public Task<UserCashToGold> getBuyBillbyId(string Id);
-        public Task<UserAsset> getUserAssetByUser(ApplicationUser user);
+        public Task<UserGoldAsset> getUserAssetByUser(ApplicationUser user);
     }
 }

@@ -94,13 +94,13 @@ namespace Gold.Infrastructure.Services
             IdentityResult result = await _userManager.CreateAsync(user, regUserDto.Password);
             if (result.Succeeded)
             {
-                UserAsset asset = new UserAsset()
+                UserGoldAsset asset = new UserGoldAsset()
                 {
-                    Cash = 0,
-                    Gold = 0,
+                    TotalCashAsset = 0,
+                    GoldAmount = 0,
                     ToAppUser = user
                 };
-                await _Context.UserAssets.AddAsync(asset);
+                await _Context.UserGoldAssets.AddAsync(asset);
                 await _Context.SaveChangesAsync();
             }
             return result;

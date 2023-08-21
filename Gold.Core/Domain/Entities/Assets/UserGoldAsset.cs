@@ -19,7 +19,7 @@ public class UserGoldAsset
     /// <summary>
     /// total value of gold asset stored in user account
     /// </summary>
-    public double TotalCashAsset { get; set; }
+    public decimal TotalCashAsset { get; set; }
 
     //navigation properties
     public ICollection<UserCashToGold>? ToCashGolds { get; set; }

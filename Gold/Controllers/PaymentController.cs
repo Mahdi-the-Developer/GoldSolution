@@ -68,7 +68,7 @@ namespace Gold.UI.Controllers
                 return View();
             }
 
-            UserAsset asset = await _payServices.getUserAssetByUser(user);
+            UserGoldAsset asset = await _payServices.getUserAssetByUser(user);
 
             PayBillDTO payBillDto = new PayBillDTO()
             {
@@ -80,22 +80,22 @@ namespace Gold.UI.Controllers
                 TotalCashAmount = bill.TotalCash,
                 BillRegDateTime = bill.DateTime,
                 ExecutionTime = null,
-                UserCashAsset = asset.Cash,
+                UserCashAsset = asset.TotalCashAsset,
                 FinalPayment = 0,
                 DealName = "خرید طلا",
             };
 
-            if (asset.Cash > 0 && asset.Cash >= bill.TotalCash)
+            if (asset.TotalCashAsset > 0 && asset.TotalCashAsset >= bill.TotalCash)
             {
                 payBillDto.CashToPay = 0;
                 ViewBag.wallet = "full";
             }
-            if (asset.Cash > 0 && asset.Cash < bill.TotalCash)
+            if (asset.TotalCashAsset > 0 && asset.TotalCashAsset < bill.TotalCash)
             {
-                payBillDto.CashToPay = (int)(bill.TotalCash - asset.Cash);
+                payBillDto.CashToPay = (int)(bill.TotalCash - asset.TotalCashAsset);
                 ViewBag.wallet = "part";
             }
-            if (asset.Cash == 0)
+            if (asset.TotalCashAsset == 0)
             {
                 payBillDto.CashToPay = (int)bill.TotalCash;
                 ViewBag.wallet = "none";

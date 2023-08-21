@@ -251,7 +251,7 @@ namespace Gold.Infrastructure.Services
         public async Task<double> GetUserAssets(HttpContext httpContext)
         {
             ApplicationUser user = await _userManager.GetUserAsync(httpContext.User);
-            return await _context.UserAssets.Where(uga => uga.ToAppUser == user).Select(uga => uga.Gold).FirstOrDefaultAsync();
+            return await _context.UserGoldAssets.Where(uga => uga.ToAppUser == user).Select(uga => uga.GoldAmount).FirstOrDefaultAsync();
         }
 
         public async Task<List<UserCashToGoldDTO>> GetusersGoldDemands()
