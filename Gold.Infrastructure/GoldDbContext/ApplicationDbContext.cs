@@ -2,6 +2,7 @@
 using Gold.Core.Domain.Entities.Assets;
 using Gold.Core.Domain.Entities.Finance;
 using Gold.Core.Domain.Entities.Product;
+using Gold.Core.Domain.Entities.Ticket;
 using Gold.Core.Domain.IdentityEntities;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
@@ -26,6 +27,8 @@ namespace Gold.Infrastructure.GoldDbContext
         public virtual DbSet<SystemGoldToCash> SystemGoldToCashs { get; set; }
         public virtual DbSet<UserSystemGoldToCashBill> UserSystemGoldToCashBills { get; set; }
         public virtual DbSet<UserSystemCashToGoldBill> UserSystemCashToGoldBills { get; set; }
+        public virtual DbSet<Ticket> Tickets { get; set; }
+        public virtual DbSet<TicketMessage> TicketMessages { get; set; }
         public virtual DbSet<Transaction> Transactions { get; set; }
 
 
