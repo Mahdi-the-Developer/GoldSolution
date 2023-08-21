@@ -1,15 +1,11 @@
-﻿using System;
-using System.Collections.Generic;
+﻿
 using System.ComponentModel.DataAnnotations;
 using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
-namespace Gold.Core.Domain.Entities.Ticket
+namespace Gold.Core.Domain.Entities.TicketDTO
 {
-    public class TicketMessage
+    public class TicketMessageDto
     {
-        [Key]
         public string MessageId { get; set; } = Guid.NewGuid().ToString();
         public string MessageSubject { get; set; }
         public string MessageBody { get; set; }
