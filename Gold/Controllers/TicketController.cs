@@ -4,6 +4,7 @@ using Microsoft.AspNetCore.Mvc;
 namespace Gold.UI.Controllers
 {
     [Authorize]
+    [Route("[controller]/[action]")]
     public class TicketController : Controller
     {
 

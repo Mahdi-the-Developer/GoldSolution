@@ -31,7 +31,7 @@ namespace Gold.UI.Controllers
 
         #region payment
         [HttpGet]
-        [Route("/PayPage/{billId}")]
+        [Route("/payment/paypage/{billId?}")]
         public async Task<IActionResult> PayPage(string billId)
         {
             ViewBag.HasError = false;
@@ -107,7 +107,6 @@ namespace Gold.UI.Controllers
 
 
         [HttpPost]
-        [Route("/Payment")]
         public async Task<IActionResult> Payment(PayBillDTO payBillDto)
         {
             if (!ModelState.IsValid)
@@ -131,14 +130,20 @@ namespace Gold.UI.Controllers
             return View();
         }
 
-        [Route("/returnFromBank/{transId}")]
+
+
+        [Route("/payment/returnfrombank/{transId?}")]
         public async Task<IActionResult> ReturnFromBank(string transId)
         {
             if (HttpContext.Request.Query["Status"].ToString().ToLower() == "ok" && HttpContext.Request.Query["Authority"] != "")
             {
-                Transaction trans = await _payServices.getTransactionById(transId);
-
-                string authority = HttpContext.Request.Query["Authority"];
+                Transaction? trans = await _payServices.getTransactionById(transId);
+                if (trans == null)
+                {
+                    ModelState.AddModelError("", "تراکنش مورد نظر یافت نشد");
+                    return View();
+                }
+                string? authority = HttpContext.Request.Query["Authority"];
                 var payment = new ZarinpalSandbox.Payment((int)trans.Cash);
                 var res = payment.Verification(authority).Result;
                 if (res.Status == 100)
@@ -157,7 +162,7 @@ namespace Gold.UI.Controllers
                         await _payServices.setUserCashGoldIsPayedById(trans.PayBillId);
                     }
                 }
-                TransactionDTO transDto = new TransactionDTO()
+                TransactionDTO transDto = new()
                 {
                     Cash = trans.Cash,
                     DateTime = trans.DateTime,

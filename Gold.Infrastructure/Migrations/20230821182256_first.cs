@@ -6,7 +6,7 @@ using Microsoft.EntityFrameworkCore.Migrations;
 namespace Gold.Infrastructure.Migrations
 {
     /// <inheritdoc />
-    public partial class tickets : Migration
+    public partial class first : Migration
     {
         /// <inheritdoc />
         protected override void Up(MigrationBuilder migrationBuilder)
@@ -68,35 +68,15 @@ namespace Gold.Infrastructure.Migrations
                 });
 
             migrationBuilder.CreateTable(
-                name: "TicketMessages",
-                columns: table => new
-                {
-                    MessageId = table.Column<string>(type: "nvarchar(450)", nullable: false),
-                    MessageSubject = table.Column<string>(type: "nvarchar(max)", nullable: false),
-                    MessageBody = table.Column<string>(type: "nvarchar(max)", nullable: false),
-                    MessageTime = table.Column<DateTime>(type: "datetime2", nullable: false)
-                },
-                constraints: table =>
-                {
-                    table.PrimaryKey("PK_TicketMessages", x => x.MessageId);
-                });
-
-            migrationBuilder.CreateTable(
                 name: "Tickets",
                 columns: table => new
                 {
                     TicketId = table.Column<string>(type: "nvarchar(450)", nullable: false),
-                    StatusEnum = table.Column<int>(type: "int", nullable: false),
-                    TicketId1 = table.Column<string>(type: "nvarchar(450)", nullable: true)
+                    StatusEnum = table.Column<int>(type: "int", nullable: false)
                 },
                 constraints: table =>
                 {
                     table.PrimaryKey("PK_Tickets", x => x.TicketId);
-                    table.ForeignKey(
-                        name: "FK_Tickets_Tickets_TicketId1",
-                        column: x => x.TicketId1,
-                        principalTable: "Tickets",
-                        principalColumn: "TicketId");
                 });
 
             migrationBuilder.CreateTable(
@@ -283,75 +263,21 @@ namespace Gold.Infrastructure.Migrations
                 });
 
             migrationBuilder.CreateTable(
-                name: "UserAssets",
+                name: "UserGoldAssets",
                 columns: table => new
                 {
                     Id = table.Column<string>(type: "nvarchar(450)", nullable: false),
-                    Gold = table.Column<double>(type: "float", nullable: false),
-                    Cash = table.Column<decimal>(type: "decimal(18,2)", nullable: false),
+                    GoldAmount = table.Column<double>(type: "float", nullable: false),
+                    PayedTotalCash = table.Column<double>(type: "float", nullable: false),
+                    EarnedTotalCash = table.Column<double>(type: "float", nullable: false),
+                    TotalCashAsset = table.Column<decimal>(type: "decimal(18,2)", nullable: false),
                     ToAppUserId = table.Column<string>(type: "nvarchar(450)", nullable: true)
                 },
                 constraints: table =>
                 {
-                    table.PrimaryKey("PK_UserAssets", x => x.Id);
+                    table.PrimaryKey("PK_UserGoldAssets", x => x.Id);
                     table.ForeignKey(
-                        name: "FK_UserAssets_AspNetUsers_ToAppUserId",
-                        column: x => x.ToAppUserId,
-                        principalTable: "AspNetUsers",
-                        principalColumn: "Id");
-                });
-
-            migrationBuilder.CreateTable(
-                name: "UserCashGolds",
-                columns: table => new
-                {
-                    Id = table.Column<string>(type: "nvarchar(450)", nullable: false),
-                    TotalCash = table.Column<decimal>(type: "decimal(18,2)", nullable: false),
-                    LeftCash = table.Column<decimal>(type: "decimal(18,2)", nullable: false),
-                    SpentCash = table.Column<decimal>(type: "decimal(18,2)", nullable: false),
-                    UnitPrice = table.Column<decimal>(type: "decimal(18,2)", nullable: false),
-                    EarnedGold = table.Column<double>(type: "float", nullable: false),
-                    DateTime = table.Column<DateTime>(type: "datetime2", nullable: false),
-                    ExecutionTime = table.Column<DateTime>(type: "datetime2", nullable: false),
-                    Delay = table.Column<long>(type: "bigint", nullable: false),
-                    IsPayed = table.Column<bool>(type: "bit", nullable: false),
-                    IsActive = table.Column<bool>(type: "bit", nullable: false),
-                    IsDone = table.Column<bool>(type: "bit", nullable: false),
-                    ToAppUserId = table.Column<string>(type: "nvarchar(450)", nullable: true)
-                },
-                constraints: table =>
-                {
-                    table.PrimaryKey("PK_UserCashGolds", x => x.Id);
-                    table.ForeignKey(
-                        name: "FK_UserCashGolds_AspNetUsers_ToAppUserId",
-                        column: x => x.ToAppUserId,
-                        principalTable: "AspNetUsers",
-                        principalColumn: "Id");
-                });
-
-            migrationBuilder.CreateTable(
-                name: "UserGoldCashs",
-                columns: table => new
-                {
-                    Id = table.Column<string>(type: "nvarchar(450)", nullable: false),
-                    TotalGold = table.Column<double>(type: "float", nullable: false),
-                    SpentGold = table.Column<double>(type: "float", nullable: false),
-                    LeftGold = table.Column<double>(type: "float", nullable: false),
-                    EarnedCash = table.Column<decimal>(type: "decimal(18,2)", nullable: false),
-                    UnitPrice = table.Column<decimal>(type: "decimal(18,2)", nullable: false),
-                    DateTime = table.Column<DateTime>(type: "datetime2", nullable: false),
-                    ExecutionTime = table.Column<DateTime>(type: "datetime2", nullable: false),
-                    Delay = table.Column<long>(type: "bigint", nullable: false),
-                    IsPayed = table.Column<bool>(type: "bit", nullable: false),
-                    IsActive = table.Column<bool>(type: "bit", nullable: false),
-                    IsDone = table.Column<bool>(type: "bit", nullable: false),
-                    ToAppUserId = table.Column<string>(type: "nvarchar(450)", nullable: true)
-                },
-                constraints: table =>
-                {
-                    table.PrimaryKey("PK_UserGoldCashs", x => x.Id);
-                    table.ForeignKey(
-                        name: "FK_UserGoldCashs_AspNetUsers_ToAppUserId",
+                        name: "FK_UserGoldAssets_AspNetUsers_ToAppUserId",
                         column: x => x.ToAppUserId,
                         principalTable: "AspNetUsers",
                         principalColumn: "Id");
@@ -373,6 +299,94 @@ namespace Gold.Infrastructure.Migrations
                         name: "FK_GoldPrices_Products_ProductId",
                         column: x => x.ProductId,
                         principalTable: "Products",
+                        principalColumn: "Id");
+                });
+
+            migrationBuilder.CreateTable(
+                name: "TicketMessages",
+                columns: table => new
+                {
+                    MessageId = table.Column<string>(type: "nvarchar(450)", nullable: false),
+                    MessageSubject = table.Column<string>(type: "nvarchar(max)", nullable: false),
+                    MessageBody = table.Column<string>(type: "nvarchar(max)", nullable: false),
+                    MessageTime = table.Column<DateTime>(type: "datetime2", nullable: false),
+                    TicketId = table.Column<string>(type: "nvarchar(450)", nullable: true)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_TicketMessages", x => x.MessageId);
+                    table.ForeignKey(
+                        name: "FK_TicketMessages_Tickets_TicketId",
+                        column: x => x.TicketId,
+                        principalTable: "Tickets",
+                        principalColumn: "TicketId");
+                });
+
+            migrationBuilder.CreateTable(
+                name: "UserCashGolds",
+                columns: table => new
+                {
+                    Id = table.Column<string>(type: "nvarchar(450)", nullable: false),
+                    TotalCash = table.Column<decimal>(type: "decimal(18,2)", nullable: false),
+                    LeftCash = table.Column<decimal>(type: "decimal(18,2)", nullable: false),
+                    SpentCash = table.Column<decimal>(type: "decimal(18,2)", nullable: false),
+                    UnitPrice = table.Column<decimal>(type: "decimal(18,2)", nullable: false),
+                    EarnedGold = table.Column<double>(type: "float", nullable: false),
+                    DateTime = table.Column<DateTime>(type: "datetime2", nullable: false),
+                    ExecutionTime = table.Column<DateTime>(type: "datetime2", nullable: false),
+                    Delay = table.Column<long>(type: "bigint", nullable: false),
+                    IsPayed = table.Column<bool>(type: "bit", nullable: false),
+                    IsActive = table.Column<bool>(type: "bit", nullable: false),
+                    IsDone = table.Column<bool>(type: "bit", nullable: false),
+                    ToAppUserId = table.Column<string>(type: "nvarchar(450)", nullable: true),
+                    UserGoldAssetId = table.Column<string>(type: "nvarchar(450)", nullable: true)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_UserCashGolds", x => x.Id);
+                    table.ForeignKey(
+                        name: "FK_UserCashGolds_AspNetUsers_ToAppUserId",
+                        column: x => x.ToAppUserId,
+                        principalTable: "AspNetUsers",
+                        principalColumn: "Id");
+                    table.ForeignKey(
+                        name: "FK_UserCashGolds_UserGoldAssets_UserGoldAssetId",
+                        column: x => x.UserGoldAssetId,
+                        principalTable: "UserGoldAssets",
+                        principalColumn: "Id");
+                });
+
+            migrationBuilder.CreateTable(
+                name: "UserGoldCashs",
+                columns: table => new
+                {
+                    Id = table.Column<string>(type: "nvarchar(450)", nullable: false),
+                    TotalGold = table.Column<double>(type: "float", nullable: false),
+                    SpentGold = table.Column<double>(type: "float", nullable: false),
+                    LeftGold = table.Column<double>(type: "float", nullable: false),
+                    EarnedCash = table.Column<decimal>(type: "decimal(18,2)", nullable: false),
+                    UnitPrice = table.Column<decimal>(type: "decimal(18,2)", nullable: false),
+                    DateTime = table.Column<DateTime>(type: "datetime2", nullable: false),
+                    ExecutionTime = table.Column<DateTime>(type: "datetime2", nullable: false),
+                    Delay = table.Column<long>(type: "bigint", nullable: false),
+                    IsPayed = table.Column<bool>(type: "bit", nullable: false),
+                    IsActive = table.Column<bool>(type: "bit", nullable: false),
+                    IsDone = table.Column<bool>(type: "bit", nullable: false),
+                    ToAppUserId = table.Column<string>(type: "nvarchar(450)", nullable: true),
+                    UserGoldAssetId = table.Column<string>(type: "nvarchar(450)", nullable: true)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_UserGoldCashs", x => x.Id);
+                    table.ForeignKey(
+                        name: "FK_UserGoldCashs_AspNetUsers_ToAppUserId",
+                        column: x => x.ToAppUserId,
+                        principalTable: "AspNetUsers",
+                        principalColumn: "Id");
+                    table.ForeignKey(
+                        name: "FK_UserGoldCashs_UserGoldAssets_UserGoldAssetId",
+                        column: x => x.UserGoldAssetId,
+                        principalTable: "UserGoldAssets",
                         principalColumn: "Id");
                 });
 
@@ -440,17 +454,17 @@ namespace Gold.Infrastructure.Migrations
             migrationBuilder.InsertData(
                 table: "AspNetUsers",
                 columns: new[] { "Id", "AccessFailedCount", "ConcurrencyStamp", "CreatDateTime", "Email", "EmailConfirmed", "FirstName", "LastName", "LockoutEnabled", "LockoutEnd", "NormalizedEmail", "NormalizedUserName", "PasswordHash", "PhoneNumber", "PhoneNumberConfirmed", "SecurityStamp", "TwoFactorEnabled", "UserName" },
-                values: new object[] { "8c72dff883b3403e81dc7bf88ce26b8a", 0, "daa973fe-0f9f-4173-bfdf-3a5731b047f6", new DateTime(2023, 8, 21, 16, 30, 20, 807, DateTimeKind.Local).AddTicks(2848), null, false, "Mahdi", "Montazeri", false, null, null, null, "AQAAAAIAAYagAAAAEELD1V7vWrfPtItdV1NtSA39X5X9guVfPmclYN5hDOo1yuPIXikB4eOT7UrunSRbHw==", "09125850371", false, "1", false, "MainAdmin" });
+                values: new object[] { "8c72dff883b3403e81dc7bf88ce26b8a", 0, "4939e06c-d5dd-4fe6-954d-29d1c8a6290f", new DateTime(2023, 8, 21, 21, 52, 56, 429, DateTimeKind.Local).AddTicks(9342), null, false, "Mahdi", "Montazeri", false, null, null, null, "AQAAAAIAAYagAAAAEOh8zb36yHqMoZlkVnV7KeWhThGr6t1MHZLjy3VXc0xkHWC4f/ob9CEcUmNwH9tjIg==", "09125850371", false, "1", false, "MainAdmin" });
 
             migrationBuilder.InsertData(
                 table: "GoldPrices",
                 columns: new[] { "Id", "DateTime", "Price", "ProductId" },
-                values: new object[] { "106f2edd-0745-4eb6-9a28-2fcb71db6060", new DateTime(2023, 8, 21, 16, 30, 20, 812, DateTimeKind.Local).AddTicks(430), 105000.0, null });
+                values: new object[] { "253f7eec-9cd2-432e-b4b2-7508b23abc14", new DateTime(2023, 8, 21, 21, 52, 56, 434, DateTimeKind.Local).AddTicks(9968), 105000.0, null });
 
             migrationBuilder.InsertData(
                 table: "Products",
                 columns: new[] { "Id", "Name", "UnitName" },
-                values: new object[] { "3aa1fedb-e9b5-4057-b002-fba02046a141", "Gold", "گرم" });
+                values: new object[] { "0f25423d-1549-4b7c-8723-33ca6a5b4c45", "Gold", "گرم" });
 
             migrationBuilder.InsertData(
                 table: "AspNetUserRoles",
@@ -519,14 +533,9 @@ namespace Gold.Infrastructure.Migrations
                 column: "ToAppUserId");
 
             migrationBuilder.CreateIndex(
-                name: "IX_Tickets_TicketId1",
-                table: "Tickets",
-                column: "TicketId1");
-
-            migrationBuilder.CreateIndex(
-                name: "IX_UserAssets_ToAppUserId",
-                table: "UserAssets",
-                column: "ToAppUserId");
+                name: "IX_TicketMessages_TicketId",
+                table: "TicketMessages",
+                column: "TicketId");
 
             migrationBuilder.CreateIndex(
                 name: "IX_UserCashGolds_ToAppUserId",
@@ -534,9 +543,24 @@ namespace Gold.Infrastructure.Migrations
                 column: "ToAppUserId");
 
             migrationBuilder.CreateIndex(
+                name: "IX_UserCashGolds_UserGoldAssetId",
+                table: "UserCashGolds",
+                column: "UserGoldAssetId");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_UserGoldAssets_ToAppUserId",
+                table: "UserGoldAssets",
+                column: "ToAppUserId");
+
+            migrationBuilder.CreateIndex(
                 name: "IX_UserGoldCashs_ToAppUserId",
                 table: "UserGoldCashs",
                 column: "ToAppUserId");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_UserGoldCashs_UserGoldAssetId",
+                table: "UserGoldCashs",
+                column: "UserGoldAssetId");
 
             migrationBuilder.CreateIndex(
                 name: "IX_UserSystemCashToGoldBills_ToSystemGoldToCashId",
@@ -584,13 +608,7 @@ namespace Gold.Infrastructure.Migrations
                 name: "TicketMessages");
 
             migrationBuilder.DropTable(
-                name: "Tickets");
-
-            migrationBuilder.DropTable(
                 name: "Transactions");
-
-            migrationBuilder.DropTable(
-                name: "UserAssets");
 
             migrationBuilder.DropTable(
                 name: "UserSystemCashToGoldBills");
@@ -605,6 +623,9 @@ namespace Gold.Infrastructure.Migrations
                 name: "Products");
 
             migrationBuilder.DropTable(
+                name: "Tickets");
+
+            migrationBuilder.DropTable(
                 name: "SystemGoldToCashs");
 
             migrationBuilder.DropTable(
@@ -615,6 +636,9 @@ namespace Gold.Infrastructure.Migrations
 
             migrationBuilder.DropTable(
                 name: "UserGoldCashs");
+
+            migrationBuilder.DropTable(
+                name: "UserGoldAssets");
 
             migrationBuilder.DropTable(
                 name: "AspNetUsers");

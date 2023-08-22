@@ -15,7 +15,7 @@ public class Transaction
 {
     [Key]
     public string Id { get; set; } = "";
-    public string? PayBillId { get; set; }
+    public string PayBillId { get; set; } = "";
     public string PayType { get; set; } = ""; // bank /bankwallet /wallet
     public string DealName { get; set; } = ""; // خرید طلا/افزایش موجودی
     public string DealType { get; set; } = ""; // deposit / withdraw / withdrawWallet

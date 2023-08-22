@@ -9,6 +9,8 @@ sysGoldDemand sysGoldOffer allUsersBillsList
 //today
 
 change on step 1 ticket
+ step 1 on master
+-
 //todo
 
 -add assets to user panel

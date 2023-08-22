@@ -27,13 +27,11 @@ namespace Gold.UI.Controllers
 
         #region User Buy Gold
         [HttpGet]
-        [Route("/gold/buy")]
         public IActionResult Buy()
         {
             return View();
         }
         [HttpPost]
-        [Route("/gold/buy")]
         public async Task<IActionResult> Buy(UserCashToGoldDTO uC2GDto)
         {
             if (!ModelState.IsValid)
@@ -52,14 +50,12 @@ namespace Gold.UI.Controllers
 
         #region User Sell Gold
         [HttpGet]
-        [Route("/gold/sell")]
         public IActionResult Sell()
         {
             return View();
         }
 
         [HttpPost]
-        [Route("/gold/sell")]
         public async Task<IActionResult> Sell(UserGoldToCashDTO uG2CDto)
         {
             if (!ModelState.IsValid)
@@ -76,7 +72,6 @@ namespace Gold.UI.Controllers
         #endregion
 
         #region User Gold Lists
-        [Route("/userorderslist")]
         public async Task<IActionResult> UserOrdersList()        
         {
             List<UserBillDTO> bills = await _goldServices.GetUserBills(HttpContext);
@@ -86,14 +81,12 @@ namespace Gold.UI.Controllers
 
         #region Logics
         
-        [Route("/executesyssellbill")]
         public async Task<string> ExecuteSysSellbill(string id)
         {
             var result = await _goldServices.ExecuteSysSellbill(id);
             return result;
         }
 
-        [Route("/executesysbuybill")]
         public async Task<string> ExecuteSysBuybill(string id)
         {
             var result = await _goldServices.ExecuteSysBuybill(id);
@@ -101,14 +94,12 @@ namespace Gold.UI.Controllers
         }
 
 
-        [Route("/executeusersellbill")]
         public async Task<string> ExecuteUserSellBill(string id)
         {
             var result = await _goldServices.ExecuteUserSellBill(id);
             return result;
         }
 
-        [Route("/executeuserbuybill")]
         public async Task<string> ExecuteUserBuyBill(string id)
         {
             var result = await _goldServices.ExecuteUserBuyBill(id);
@@ -118,7 +109,6 @@ namespace Gold.UI.Controllers
 
         #region Remote Validators
 
-        [Route("/gold/user/CashAmountValidator")]
         public IActionResult CashAmountValidator(uint CashAmount)
         {
             if (1000000000 < CashAmount)
@@ -127,8 +117,6 @@ namespace Gold.UI.Controllers
                 return Json("مبلغ مورد نظر بایستی بیشتر از 5 هزار تومان باشد");
             return Json(true);
         }
-
-        [Route("/gold/user/GoldAmountValidator")]
         public async Task<IActionResult> GoldAmountValidator(double GoldAmount)
         {
             var userGoldAmount = await _goldServices.GetUserAssets(HttpContext);

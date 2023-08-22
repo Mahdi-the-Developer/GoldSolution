@@ -19,12 +19,11 @@ app.Use(async (context, next) =>
     }
 });
 app.UseStaticFiles();
-app.UseRouting();
 app.UseAuthentication();
+app.UseRouting();
 app.UseAuthorization();
 app.MapHub<UserHub>("/hubs/user");
-app.MapControllers();
-
-
-
+app.MapControllerRoute(
+    name: "default",
+    pattern: "{controller=Home}/{action=Index}/{id?}");
 app.Run();

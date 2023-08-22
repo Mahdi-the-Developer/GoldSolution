@@ -8,7 +8,6 @@ using System.Security.Policy;
 
 namespace Gold.UI.Controllers
 {
-    [Route("[controller]/[action]")]
     public class AccountController : Controller
     {
         private readonly UserManager<ApplicationUser> _userManager;
@@ -24,14 +23,12 @@ namespace Gold.UI.Controllers
 
         #region Register user
         [HttpGet]
-        [Route("/register")]
         public IActionResult Register()
         {
             return View();
         }
 
         [HttpPost]
-        [Route("/register")]
         public async Task<IActionResult> Register(RegisterUserDTO regUserDto)
         {
             if (!ModelState.IsValid || regUserDto == null)
@@ -61,13 +58,11 @@ namespace Gold.UI.Controllers
 
         #region LogIn
         [HttpGet]
-        [Route("/login")]
         public IActionResult Login()
         {
             return View();
         }
 
-        [Route("/login")]
         [HttpPost]
         public async Task<IActionResult> Login(LoginDTO LoginDto)
         {
@@ -87,14 +82,12 @@ namespace Gold.UI.Controllers
 
         #region LogOut
         [HttpGet]
-        [Route("/logoutview")]
         public IActionResult LogoutView()
         {
             return View();
         }
 
         [HttpGet]
-        [Route("/logout")]
         public async Task<IActionResult> Logout()
         {
             await _signInManager.SignOutAsync();
@@ -104,7 +97,6 @@ namespace Gold.UI.Controllers
 
         #region User Panel
         [HttpGet]
-        [Route("/userpanel")]
         public async Task<IActionResult> UserPanel()
         {
             var user =await _accountServices.GetLogedinUser(HttpContext);

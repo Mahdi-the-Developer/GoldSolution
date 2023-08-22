@@ -12,6 +12,7 @@ using System.Collections.Generic;
 
 using Gold.Core.Domain.Entities.Assets;
 using Gold.Core.DTO.PayDTO;
+using System.Reflection.Metadata.Ecma335;
 
 namespace Gold.Infrastructure.Services
 {
@@ -76,11 +77,14 @@ namespace Gold.Infrastructure.Services
             await _context.SaveChangesAsync();
         }
 
-        public async Task setUserCashGoldIsPayedById(string billId)
+        public async Task setUserCashGoldIsPayedById(string? billId)
         {
-            UserCashToGold bill = await _context.UserCashGolds.SingleOrDefaultAsync(b => b.Id == billId);
-            bill.IsPayed = true;
-            await _context.SaveChangesAsync();
+            UserCashToGold? bill = await _context.UserCashGolds.SingleOrDefaultAsync(b => b.Id == billId);
+            if (bill != null)
+            {
+                bill.IsPayed = true;
+                await _context.SaveChangesAsync();
+            }
         }
 
         public async Task withdrawFromAssetByIdandAmount(string assetId, decimal moneyAmount)

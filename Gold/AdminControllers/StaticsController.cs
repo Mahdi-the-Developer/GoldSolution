@@ -10,8 +10,6 @@ namespace Gold.UI.AdminControllers
 
         public IActionResult Index()
         {
-
-
             return View();
         }
     }
