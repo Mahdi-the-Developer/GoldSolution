@@ -8,6 +8,7 @@ using System.Text;
 using System.Threading.Tasks;
 using Microsoft.EntityFrameworkCore.Metadata.Internal;
 using System.Numerics;
+using System.ComponentModel.DataAnnotations.Schema;
 
 namespace Gold.Core.Domain.Entities.Finance
 {
@@ -24,10 +25,12 @@ namespace Gold.Core.Domain.Entities.Finance
         /// </summary>
         [RegularExpression(@"^\d+(\.\d{1,4})?$",ErrorMessage ="حد اکثر 4 رقم اعشار قابل قبول است")]
         public double TotalGold { get; set; }
+        [Column(TypeName = "decimal(18,2)")]
         /// <summary>
         /// the total price that system payed to buy gold 
         /// </summary>
         public decimal TotalCash { get; set; }
+        [Column(TypeName = "decimal(18,2)")]
         /// <summary>
         /// the price that is determined to sell one geram of gold to users
         /// </summary>
@@ -39,10 +42,12 @@ namespace Gold.Core.Domain.Entities.Finance
         public double SoldGold { get; set; }
         [RegularExpression(@"^\d+(\.\d{1,4})?$", ErrorMessage = "حد اکثر 4 رقم اعشار قابل قبول است")]
         public double LeftGold { get; set; }
+        [Column(TypeName = "decimal(18,2)")]
         /// <summary>
         /// the total cash system earned in this bill from selling gold to users until now
         /// </summary>
-        public decimal EarnedCash { get; set; }  
+        public decimal EarnedCash { get; set; } 
+        [Column(TypeName = "decimal(18,2)")]
         public decimal LeftCash { get; set; }
         public DateTime DateTime { get; set; }      
         public DateTime ExecutionTime { get; set; }      

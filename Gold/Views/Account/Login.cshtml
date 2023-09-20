@@ -42,7 +42,7 @@
                 </div>
                 <form method="post" asp-controller="Account" asp-action="Login">
                     <div class="row g-3">
-                        
+
 
                         <div class="col-12">
                             <label class="form-label" for="Phone">شماره موبایل</label>
@@ -55,7 +55,7 @@
                             <input asp-for="Password" class="form-control" type="password" placeholder="کلمه عبور">
                             <span class="invalid-feedback" asp-validation-for="Password"></span>
                         </div>
-                       
+
                         <button class="w-100 btn btn-primary" type="submit">ورود</button>
                         @if (ViewBag.Errors != null)
                         {
@@ -68,6 +68,7 @@
                                 </ul>
                             </div>
                         }
+                    </div>
                 </form>
             </div>
         </div>

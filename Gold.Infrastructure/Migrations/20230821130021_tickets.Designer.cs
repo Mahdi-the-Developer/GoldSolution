@@ -4,7 +4,6 @@ using Gold.Infrastructure.GoldDbContext;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
-using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 #nullable disable
@@ -12,15 +11,13 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace Gold.Infrastructure.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    [Migration("20230821130021_tickets")]
-    partial class tickets
+    partial class ApplicationDbContextModelSnapshot : ModelSnapshot
     {
-        /// <inheritdoc />
-        protected override void BuildTargetModel(ModelBuilder modelBuilder)
+        protected override void BuildModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
-                .HasAnnotation("ProductVersion", "7.0.7")
+                .HasAnnotation("ProductVersion", "7.0.10")
                 .HasAnnotation("Relational:MaxIdentifierLength", 128);
 
             SqlServerModelBuilderExtensions.UseIdentityColumns(modelBuilder);
@@ -91,25 +88,31 @@ namespace Gold.Infrastructure.Migrations
                     b.ToTable("AspNetUserTokens", (string)null);
                 });
 
-            modelBuilder.Entity("Gold.Core.Domain.Entities.Assets.UserAsset", b =>
+            modelBuilder.Entity("Gold.Core.Domain.Entities.Assets.UserGoldAsset", b =>
                 {
                     b.Property<string>("Id")
                         .HasColumnType("nvarchar(450)");
 
-                    b.Property<decimal>("Cash")
+                    b.Property<decimal>("EarnedTotalCash")
                         .HasColumnType("decimal(18,2)");
 
-                    b.Property<double>("Gold")
+                    b.Property<double>("GoldAmount")
                         .HasColumnType("float");
+
+                    b.Property<decimal>("PayedTotalCash")
+                        .HasColumnType("decimal(18,2)");
 
                     b.Property<string>("ToAppUserId")
                         .HasColumnType("nvarchar(450)");
+
+                    b.Property<decimal>("TotalCashAsset")
+                        .HasColumnType("decimal(18,2)");
 
                     b.HasKey("Id");
 
                     b.HasIndex("ToAppUserId");
 
-                    b.ToTable("UserAssets");
+                    b.ToTable("UserGoldAssets");
                 });
 
             modelBuilder.Entity("Gold.Core.Domain.Entities.Finance.SystemCashToGold", b =>
@@ -241,6 +244,7 @@ namespace Gold.Infrastructure.Migrations
                         .HasColumnType("bit");
 
                     b.Property<string>("PayBillId")
+                        .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
                     b.Property<string>("PayType")
@@ -293,9 +297,14 @@ namespace Gold.Infrastructure.Migrations
                     b.Property<decimal>("UnitPrice")
                         .HasColumnType("decimal(18,2)");
 
+                    b.Property<string>("UserGoldAssetId")
+                        .HasColumnType("nvarchar(450)");
+
                     b.HasKey("Id");
 
                     b.HasIndex("ToAppUserId");
+
+                    b.HasIndex("UserGoldAssetId");
 
                     b.ToTable("UserCashGolds");
                 });
@@ -341,9 +350,14 @@ namespace Gold.Infrastructure.Migrations
                     b.Property<decimal>("UnitPrice")
                         .HasColumnType("decimal(18,2)");
 
+                    b.Property<string>("UserGoldAssetId")
+                        .HasColumnType("nvarchar(450)");
+
                     b.HasKey("Id");
 
                     b.HasIndex("ToAppUserId");
+
+                    b.HasIndex("UserGoldAssetId");
 
                     b.ToTable("UserGoldCashs");
                 });
@@ -359,12 +373,13 @@ namespace Gold.Infrastructure.Migrations
                     b.Property<double>("GoldAmount")
                         .HasColumnType("float");
 
+                    b.Property<int>("MyProperty")
+                        .HasColumnType("int");
+
                     b.Property<string>("ToSystemGoldToCashId")
-                        .IsRequired()
                         .HasColumnType("nvarchar(450)");
 
                     b.Property<string>("ToUserCashToGoldId")
-                        .IsRequired()
                         .HasColumnType("nvarchar(450)");
 
                     b.Property<DateTime>("dateTime")
@@ -391,11 +406,9 @@ namespace Gold.Infrastructure.Migrations
                         .HasColumnType("float");
 
                     b.Property<string>("ToSystemCashToGoldId")
-                        .IsRequired()
                         .HasColumnType("nvarchar(450)");
 
                     b.Property<string>("ToUserGoldToCashId")
-                        .IsRequired()
                         .HasColumnType("nvarchar(450)");
 
                     b.Property<DateTime>("dateTime")
@@ -418,8 +431,8 @@ namespace Gold.Infrastructure.Migrations
                     b.Property<DateTime>("DateTime")
                         .HasColumnType("datetime2");
 
-                    b.Property<double>("Price")
-                        .HasColumnType("float");
+                    b.Property<decimal>("Price")
+                        .HasColumnType("decimal(18,2)");
 
                     b.Property<string>("ProductId")
                         .HasColumnType("nvarchar(450)");
@@ -433,9 +446,9 @@ namespace Gold.Infrastructure.Migrations
                     b.HasData(
                         new
                         {
-                            Id = "106f2edd-0745-4eb6-9a28-2fcb71db6060",
-                            DateTime = new DateTime(2023, 8, 21, 16, 30, 20, 812, DateTimeKind.Local).AddTicks(430),
-                            Price = 105000.0
+                            Id = "224bc62c-6d44-42d2-9b61-2ebe4d0d28f3",
+                            DateTime = new DateTime(2023, 8, 27, 20, 49, 19, 558, DateTimeKind.Local).AddTicks(8641),
+                            Price = 105000m
                         });
                 });
 
@@ -459,7 +472,7 @@ namespace Gold.Infrastructure.Migrations
                     b.HasData(
                         new
                         {
-                            Id = "3aa1fedb-e9b5-4057-b002-fba02046a141",
+                            Id = "af8383dc-cad8-4020-b4c8-f62d33f88185",
                             Name = "Gold",
                             UnitName = "گرم"
                         });
@@ -470,15 +483,25 @@ namespace Gold.Infrastructure.Migrations
                     b.Property<string>("TicketId")
                         .HasColumnType("nvarchar(450)");
 
-                    b.Property<int>("StatusEnum")
+                    b.Property<DateTime>("TicketDateTime")
+                        .HasColumnType("datetime2");
+
+                    b.Property<int>("TicketDepartment")
                         .HasColumnType("int");
 
-                    b.Property<string>("TicketId1")
+                    b.Property<int>("TicketStatus")
+                        .HasColumnType("int");
+
+                    b.Property<string>("TicketTitle")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("TicketToUserId")
                         .HasColumnType("nvarchar(450)");
 
                     b.HasKey("TicketId");
 
-                    b.HasIndex("TicketId1");
+                    b.HasIndex("TicketToUserId");
 
                     b.ToTable("Tickets");
                 });
@@ -499,7 +522,12 @@ namespace Gold.Infrastructure.Migrations
                     b.Property<DateTime>("MessageTime")
                         .HasColumnType("datetime2");
 
+                    b.Property<string>("TicketId")
+                        .HasColumnType("nvarchar(450)");
+
                     b.HasKey("MessageId");
+
+                    b.HasIndex("TicketId");
 
                     b.ToTable("TicketMessages");
                 });
@@ -625,13 +653,13 @@ namespace Gold.Infrastructure.Migrations
                         {
                             Id = "8c72dff883b3403e81dc7bf88ce26b8a",
                             AccessFailedCount = 0,
-                            ConcurrencyStamp = "daa973fe-0f9f-4173-bfdf-3a5731b047f6",
-                            CreatDateTime = new DateTime(2023, 8, 21, 16, 30, 20, 807, DateTimeKind.Local).AddTicks(2848),
+                            ConcurrencyStamp = "378ec844-02ea-42a2-a2ab-a80bae89ebd4",
+                            CreatDateTime = new DateTime(2023, 8, 27, 20, 49, 19, 554, DateTimeKind.Local).AddTicks(6853),
                             EmailConfirmed = false,
                             FirstName = "Mahdi",
                             LastName = "Montazeri",
                             LockoutEnabled = false,
-                            PasswordHash = "AQAAAAIAAYagAAAAEELD1V7vWrfPtItdV1NtSA39X5X9guVfPmclYN5hDOo1yuPIXikB4eOT7UrunSRbHw==",
+                            PasswordHash = "AQAAAAIAAYagAAAAEBk/rAUvADaFvOhjha+6IVQnGs6EhfJoR6fcprOOj9vlctnCrGDzvVn7aYwO7s75jw==",
                             PhoneNumber = "09125850371",
                             PhoneNumberConfirmed = false,
                             SecurityStamp = "1",
@@ -720,7 +748,7 @@ namespace Gold.Infrastructure.Migrations
                     b.Navigation("User");
                 });
 
-            modelBuilder.Entity("Gold.Core.Domain.Entities.Assets.UserAsset", b =>
+            modelBuilder.Entity("Gold.Core.Domain.Entities.Assets.UserGoldAsset", b =>
                 {
                     b.HasOne("Gold.Core.Domain.IdentityEntities.ApplicationUser", "ToAppUser")
                         .WithMany()
@@ -753,6 +781,10 @@ namespace Gold.Infrastructure.Migrations
                         .WithMany()
                         .HasForeignKey("ToAppUserId");
 
+                    b.HasOne("Gold.Core.Domain.Entities.Assets.UserGoldAsset", null)
+                        .WithMany("ToCashGolds")
+                        .HasForeignKey("UserGoldAssetId");
+
                     b.Navigation("ToAppUser");
                 });
 
@@ -762,6 +794,10 @@ namespace Gold.Infrastructure.Migrations
                         .WithMany()
                         .HasForeignKey("ToAppUserId");
 
+                    b.HasOne("Gold.Core.Domain.Entities.Assets.UserGoldAsset", null)
+                        .WithMany("ToGoldCashs")
+                        .HasForeignKey("UserGoldAssetId");
+
                     b.Navigation("ToAppUser");
                 });
 
@@ -769,15 +805,11 @@ namespace Gold.Infrastructure.Migrations
                 {
                     b.HasOne("Gold.Core.Domain.Entities.Finance.SystemGoldToCash", "ToSystemGoldToCash")
                         .WithMany("ToUserSystemCashToGoldBills")
-                        .HasForeignKey("ToSystemGoldToCashId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
+                        .HasForeignKey("ToSystemGoldToCashId");
 
                     b.HasOne("Gold.Core.Domain.Entities.Finance.UserCashToGold", "ToUserCashToGold")
                         .WithMany("ToUserSystemCashToGoldBills")
-                        .HasForeignKey("ToUserCashToGoldId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
+                        .HasForeignKey("ToUserCashToGoldId");
 
                     b.Navigation("ToSystemGoldToCash");
 
@@ -788,15 +820,11 @@ namespace Gold.Infrastructure.Migrations
                 {
                     b.HasOne("Gold.Core.Domain.Entities.Finance.SystemCashToGold", "ToSystemCashToGold")
                         .WithMany("ToUserSystemGoldToCashBills")
-                        .HasForeignKey("ToSystemCashToGoldId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
+                        .HasForeignKey("ToSystemCashToGoldId");
 
                     b.HasOne("Gold.Core.Domain.Entities.Finance.UserGoldToCash", "ToUserGoldToCash")
                         .WithMany("ToUserSystemGoldToCashBills")
-                        .HasForeignKey("ToUserGoldToCashId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
+                        .HasForeignKey("ToUserGoldToCashId");
 
                     b.Navigation("ToSystemCashToGold");
 
@@ -812,9 +840,20 @@ namespace Gold.Infrastructure.Migrations
 
             modelBuilder.Entity("Gold.Core.Domain.Entities.Ticket.Ticket", b =>
                 {
-                    b.HasOne("Gold.Core.Domain.Entities.Ticket.Ticket", null)
-                        .WithMany("Messages")
-                        .HasForeignKey("TicketId1");
+                    b.HasOne("Gold.Core.Domain.IdentityEntities.ApplicationUser", "TicketToUser")
+                        .WithMany("Tickets")
+                        .HasForeignKey("TicketToUserId");
+
+                    b.Navigation("TicketToUser");
+                });
+
+            modelBuilder.Entity("Gold.Core.Domain.Entities.Ticket.TicketMessage", b =>
+                {
+                    b.HasOne("Gold.Core.Domain.Entities.Ticket.Ticket", "Ticket")
+                        .WithMany("TicketToMessages")
+                        .HasForeignKey("TicketId");
+
+                    b.Navigation("Ticket");
                 });
 
             modelBuilder.Entity("Gold.Core.Domain.IdentityEntities.ApplicationUserClaim", b =>
@@ -847,6 +886,13 @@ namespace Gold.Infrastructure.Migrations
                     b.Navigation("User");
                 });
 
+            modelBuilder.Entity("Gold.Core.Domain.Entities.Assets.UserGoldAsset", b =>
+                {
+                    b.Navigation("ToCashGolds");
+
+                    b.Navigation("ToGoldCashs");
+                });
+
             modelBuilder.Entity("Gold.Core.Domain.Entities.Finance.SystemCashToGold", b =>
                 {
                     b.Navigation("ToUserSystemGoldToCashBills");
@@ -874,7 +920,7 @@ namespace Gold.Infrastructure.Migrations
 
             modelBuilder.Entity("Gold.Core.Domain.Entities.Ticket.Ticket", b =>
                 {
-                    b.Navigation("Messages");
+                    b.Navigation("TicketToMessages");
                 });
 
             modelBuilder.Entity("Gold.Core.Domain.IdentityEntities.ApplicationRole", b =>
@@ -889,6 +935,8 @@ namespace Gold.Infrastructure.Migrations
                     b.Navigation("Claims");
 
                     b.Navigation("Logins");
+
+                    b.Navigation("Tickets");
 
                     b.Navigation("Tokens");
 

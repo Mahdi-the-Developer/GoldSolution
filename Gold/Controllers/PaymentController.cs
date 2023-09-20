@@ -42,7 +42,7 @@ namespace Gold.UI.Controllers
                 ViewBag.HasError = true;
                 return View();
             }
-            ApplicationUser user = await _accountServices.GetUserByUserName(HttpContext.User.Identity.Name);
+            ApplicationUser? user = await _accountServices.GetUserByUserName(HttpContext.User.Identity.Name);
             if (user == null)
             {
                 ModelState.AddModelError(string.Empty, "خطا در تشخیص کاربر");
@@ -70,7 +70,7 @@ namespace Gold.UI.Controllers
 
             UserGoldAsset asset = await _payServices.getUserAssetByUser(user);
 
-            PayBillDTO payBillDto = new PayBillDTO()
+            PayBillDTO payBillDto = new()
             {
                 Id = bill.Id,
                 DealType = "deposit",
@@ -125,7 +125,7 @@ namespace Gold.UI.Controllers
             var response = payment.PaymentRequest("خرید طلا", "http://localhost:5046/ReturnFromBank/" + transId, "mahdiii.montazeri@gmail.com", "09125850371");
             if (response.Result.Status == 100)
             {
-                _payServices.setTransaction(payBillDto, transId);
+                await _payServices.setTransaction(payBillDto, transId);
                 return Redirect("https://sandbox.zarinpal.com/pg/StartPay/" + response.Result.Authority);
             }
             return View();

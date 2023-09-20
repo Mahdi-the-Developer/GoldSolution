@@ -26,6 +26,7 @@ namespace Gold.UI
             services.AddScoped<IRoleServices,RoleServices>();
             services.AddScoped<IGoldServices, GoldServices>();
             services.AddScoped<IPayServices, PayServices>();
+            services.AddScoped<ITicketServices, TicketServices>();
 
             services.AddIdentity<ApplicationUser,ApplicationRole>(options=>
             {

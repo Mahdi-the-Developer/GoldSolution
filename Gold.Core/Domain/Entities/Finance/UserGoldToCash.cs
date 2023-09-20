@@ -8,6 +8,8 @@ using System.Security.Policy;
 using System.Text;
 using System.Threading.Tasks;
 using System.Numerics;
+using Microsoft.EntityFrameworkCore.Metadata.Internal;
+using System.ComponentModel.DataAnnotations.Schema;
 
 namespace Gold.Core.Domain.Entities.Finance;
 
@@ -20,7 +22,9 @@ public class UserGoldToCash
     [RegularExpression(@"^\d+(\.\d{1,4})?$",ErrorMessage ="حد اکثر 4 رقم اعشار قابل قبول است")]
     public double SpentGold { get; set; }
     public double LeftGold { get; set; }
+    [Column(TypeName = "decimal(18,2)")]
     public decimal EarnedCash { get; set; }
+    [Column(TypeName = "decimal(18,2)")]
     public decimal UnitPrice { get; set; } = 0;
     public DateTime DateTime { get; set; }
     public DateTime ExecutionTime { get; set; }

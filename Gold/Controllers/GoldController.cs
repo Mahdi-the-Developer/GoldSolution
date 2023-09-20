@@ -39,7 +39,7 @@ namespace Gold.UI.Controllers
             if (!ModelState.IsValid)
                 return View(uC2GDto);
             //send to bank and after pay set ispayed true then..
-            var result = await _goldServices.SetUserCashToGold(uC2GDto, HttpContext);
+            var result = await _goldServices.SetUserCashToGold(uC2GDto,HttpContext);
             if (!result)
             {
                 ModelState.AddModelError(string.Empty, "متاسفانه سفارش شما ثبت نشد");

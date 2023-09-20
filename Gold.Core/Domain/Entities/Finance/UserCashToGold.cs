@@ -1,8 +1,10 @@
 ﻿using Gold.Core.Domain.Entities.Assets;
 using Gold.Core.Domain.IdentityEntities;
+using Microsoft.EntityFrameworkCore.Metadata.Internal;
 using System;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
+using System.ComponentModel.DataAnnotations.Schema;
 using System.Linq;
 using System.Numerics;
 using System.Security.Policy;
@@ -15,9 +17,13 @@ public class UserCashToGold
 {
     [Key]
     public string Id { get; set; } = Guid.NewGuid().ToString();
+    [Column(TypeName = "decimal(18,2)")]
     public decimal TotalCash { get; set; }
+    [Column(TypeName = "decimal(18,2)")]
     public decimal LeftCash { get; set; }
+    [Column(TypeName = "decimal(18,2)")]
     public decimal SpentCash { get; set; }
+    [Column(TypeName = "decimal(18,2)")]
     public decimal UnitPrice { get; set; } = 0;
     [RegularExpression(@"^\d+(\.\d{1,4})?$", ErrorMessage = "حد اکثر 4 رقم اعشار قابل قبول است")]
     public double EarnedGold { get; set; }

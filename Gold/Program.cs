@@ -22,9 +22,8 @@ app.UseStaticFiles();
 app.UseRouting();
 app.UseAuthentication();
 app.UseAuthorization();
+app.MapControllerRoute(
+    name: "default",
+    pattern: "{controller=Home}/{action=Index}/{id?}");
 app.MapHub<UserHub>("/hubs/user");
-app.MapControllers();
-
-
-
 app.Run();

@@ -1,18 +1,54 @@
-//pages we have
-login register logout
-EditUser DeleteUser 
-userGoldDemand userGoldOffer userBillList
-sysGoldDemand sysGoldOffer allUsersBillsList
+
+==> pages we have set to View Folder
+Account
+	Login
+	Register
+	LogoutView
+	UserPanel
+Error
+	404
+Gold
+	Buy
+	Sell
+	UserOrdersList
+Home
+	Index
+ManageGold
+	_SystemGoldBillsListPartial
+	_UsersGoldBillsListPartial
+	ListOfUserGoldOffers
+	ListOfUserGoldDemands
+	SetSystemCashToGold
+	SetSystemGoldToCash
+	SystemGoldBillsList
+	UsersGoldBillsList
+ManageRoles
+	AddRole
+	EditRole
+	RolesList
+ManageUsers
+	AddUser
+	EditUser
+	UsersList
+Payment
+	Payment
+	PayPage
+	ReturnFromBank
+Statics
+	Index
+Ticket
+	Index
+
 
 
 
 //today
-
-change on step 1 ticket
- step 1 on master
-
+ 
+  
+   
 //todo
-
+-clean up ticketmessageDto from icollection<ticket>
+-clean up ticket service SetTicketMessages from setting ticketmessageDto.tickets which must be removed
 -add assets to user panel
 -goldcontroller:
 	payUGC

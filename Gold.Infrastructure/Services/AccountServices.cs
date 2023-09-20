@@ -6,24 +6,17 @@ using Gold.Infrastructure.GoldDbContext;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
-using System;
-using System.Collections.Generic;
 using System.Data;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace Gold.Infrastructure.Services
 {
     public class AccountServices : IAccountServices
     {
         private readonly UserManager<ApplicationUser> _userManager;
-        private readonly RoleManager<ApplicationRole> _roleManager;
         private readonly ApplicationDbContext _Context;
         public AccountServices(UserManager<ApplicationUser> userManager, RoleManager<ApplicationRole> roleManager, ApplicationDbContext Context)
         {
             _userManager = userManager;
-            _roleManager = roleManager;
             _Context = Context;
         }
 
@@ -94,7 +87,7 @@ namespace Gold.Infrastructure.Services
             IdentityResult result = await _userManager.CreateAsync(user, regUserDto.Password);
             if (result.Succeeded)
             {
-                UserGoldAsset asset = new UserGoldAsset()
+                UserGoldAsset asset = new()
                 {
                     TotalCashAsset = 0,
                     GoldAmount = 0,

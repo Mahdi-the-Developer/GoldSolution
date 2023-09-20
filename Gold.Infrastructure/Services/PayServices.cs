@@ -63,7 +63,7 @@ namespace Gold.Infrastructure.Services
 
         public async Task setTransactionIsPayedById(string transactionId)
         {
-            Transaction trans = await this.getTransactionById(transactionId);
+            Transaction? trans = await this.getTransactionById(transactionId);
             trans.IsPayed = true;
             trans.ExecutionTime = DateTime.Now;
             await _context.SaveChangesAsync();
@@ -71,9 +71,12 @@ namespace Gold.Infrastructure.Services
 
         public async Task setUserAssetCashToZeroById(string assetId)
         {
-            UserGoldAsset asset = await _context.UserGoldAssets.SingleOrDefaultAsync(a => a.Id == assetId);
-            asset.TotalCashAsset = 0;
-            await _context.SaveChangesAsync();
+            UserGoldAsset? asset = await _context.UserGoldAssets.SingleOrDefaultAsync(a => a.Id == assetId);
+            if (asset != null)
+            {
+                asset.TotalCashAsset = 0;
+                await _context.SaveChangesAsync();
+            }
         }
 
         public async Task setUserCashGoldIsPayedById(string billId)
